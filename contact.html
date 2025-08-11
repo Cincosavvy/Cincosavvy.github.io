@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Pip-Boy Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Press Start 2P', monospace;
+            color: #0f0;
+            margin: 0;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            /* Use the same background image as the main page */
+            background-image: url('/Images/ChatGPT Image May 13, 2025, 11_49_15 PM.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Loading screen is hidden on contact page */
+        #loading-screen {
+            display: none;
+        }
+
+        #main-content {
+            height: auto;
+            width: 100vw;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            justify-content: flex-start;
+            flex-grow: 1;
+            box-sizing: border-box;
+        }
+
+        /* Glass-like overlay for content */
+        #glass-overlay {
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+            backdrop-filter: blur(5px) brightness(0.8); /* Glass effect */
+            -webkit-backdrop-filter: blur(5px) brightness(0.8); /* For Safari compatibility */
+            width: 100%; /* Spans full width */
+            flex-grow: 1; /* Allows it to expand within main-content */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0; /* Padding inside the glass effect area */
+        }
+
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center; /* Ensure h1 is centered if not using header-box styles */
+        }
+
+        #top-nav {
+            background-color: rgba(15, 240, 15, 0.3);
+            border-bottom: 2px solid #0f0;
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-radius: 0;
+            width: 100%;
+        }
+
+        #top-nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #top-nav ul li {
+            margin: 0 1rem;
+        }
+
+        #top-nav ul li a {
+            color: #0f0; /* Electric lime green */
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.2s ease-in-out;
+        }
+
+        #top-nav ul li a:hover {
+            color: #fff;
+        }
+
+        #top-nav ul li.dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        #top-nav ul li.dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(15, 240, 15, 0.8);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            top: 100%;
+            left: 0;
+        }
+
+        #top-nav ul li.dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        #top-nav ul li .dropdown-content a {
+             color: #0f0; /* Electric lime green */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        #top-nav ul li .dropdown-content a:hover {
+            background-color: #0b800b;
+            color: #fff;
+        }
+
+        #footer {
+            background-color: rgba(15, 240, 15, 0.3);
+            padding: 1rem;
+            text-align: center;
+            border-top: 2px solid #0f0;
+            margin-top: auto; /* Pushes footer to the bottom */
+            width: 100%;
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        #footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        #footer-links a {
+            color: #0f0; /* Electric lime green */
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.2s ease-in-out;
+        }
+
+        #footer-links a:hover {
+            color: #fff;
+        }
+
+        /* Removed .header-box specific styles */
+        /* If you still need .header-box for other pages or elements, define it separately.
+           For this contact page, we're removing its impact on the h1. */
+
+
+        /* Container for side-by-side contact items */
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+            justify-content: center;
+            gap: 1.5rem; /* Space between the items */
+            margin-bottom: 2.5rem; /* Adjusted: Increased margin below the Email/Phone row */
+            width: 80%; /* Match max-width of single items, or adjust */
+            max-width: 850px; /* Max width for the row */
+        }
+
+        /* Contact Page Specific Styles */
+        .contact-item {
+            position: relative;
+            background-color: rgba(15, 240, 15, 0.2);
+            border: 2px solid #0f0; /* Main border for the box */
+            padding: 1rem 2rem;
+            cursor: pointer;
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* Important for the corner effects */
+            /* Default rounded border for ALL contact items (Email/Phone and Social) */
+            border-radius: 15px; /* Unified rounded border for all */
+
+            /* Increased margin-bottom for all stacked items */
+            margin-bottom: 2.5rem; /* Default margin for stacked items */
+        }
+
+        /* Adjust width for items in a row */
+        .contact-row .contact-item {
+            width: calc(50% - 0.75rem); /* Half width minus half of the gap */
+            min-width: 250px; /* Ensure they don't get too small */
+            margin-bottom: 0; /* Remove individual margin-bottom when in a row */
+        }
+
+        @media (max-width: 600px) {
+            .contact-row .contact-item {
+                width: 100%; /* Stack on very small screens */
+                min-width: unset;
+                margin-bottom: 1.5rem; /* Add some space when stacked on small screens */
+            }
+        }
+
+
+        .contact-item:hover {
+            box-shadow: 0 0 20px rgba(15, 240, 15, 0.7); /* More pronounced glow on hover */
+            transform: translateY(-3px); /* Subtle lift */
+        }
+
+        /* Corner Border Styling - Now applied to ALL contact items again */
+        .contact-item::before,
+        .contact-item::after,
+        .contact-item .corner-top-right::before,
+        .contact-item .corner-top-right::after,
+        .contact-item .corner-bottom-left::before,
+        .contact-item .corner-bottom-left::after,
+        .contact-item .corner-bottom-right::before,
+        .contact-item .corner-bottom-right::after {
+            content: '';
+            position: absolute;
+            background: #0f0; /* Green color for the corners */
+            transition: all 0.3s ease;
+            z-index: 1; /* Ensure corners are above content */
+        }
+
+        /* Top-left corner (all items) */
+        .contact-item::before { /* Horizontal part */
+            width: 30px; /* Longer to extend over curve */
+            height: 2px;
+            top: -2px;
+            left: -2px;
+            transform-origin: top left;
+        }
+        .contact-item::after { /* Vertical part */
+            width: 2px;
+            height: 30px; /* Taller to extend over curve */
+            top: -2px;
+            left: -2px;
+            transform-origin: top left;
+        }
+
+        /* Top-right corner (all items) */
+        .contact-item .corner-top-right::before { /* Horizontal part */
+            width: 30px;
+            height: 2px;
+            top: -2px;
+            right: -2px;
+            transform-origin: top right;
+        }
+        .contact-item .corner-top-right::after { /* Vertical part */
+            width: 2px;
+            height: 30px;
+            top: -2px;
+            right: -2px;
+            transform-origin: top right;
+        }
+
+        /* Bottom-left corner (all items) */
+        .contact-item .corner-bottom-left::before { /* Horizontal part */
+            width: 30px;
+            height: 2px;
+            bottom: -2px;
+            left: -2px;
+            transform-origin: bottom left;
+        }
+        .contact-item .corner-bottom-left::after { /* Vertical part */
+            width: 2px;
+            height: 30px;
+            bottom: -2px;
+            left: -2px;
+            transform-origin: bottom left;
+        }
+
+        /* Bottom-right corner (all items) */
+        .contact-item .corner-bottom-right::before { /* Horizontal part */
+            width: 30px;
+            height: 2px;
+            bottom: -2px;
+            right: -2px;
+            transform-origin: bottom right;
+        }
+        .contact-item .corner-bottom-right::after { /* Vertical part */
+            width: 2px;
+            height: 30px;
+            bottom: -2px;
+            right: -2px;
+            transform-origin: bottom right;
+        }
+
+        /* Hover effect for all corners */
+        .contact-item:hover::before,
+        .contact-item:hover::after,
+        .contact-item:hover .corner-top-right::before,
+        .contact-item:hover .corner-top-right::after,
+        .contact-item:hover .corner-bottom-left::before,
+        .contact-item:hover .corner-bottom-left::after,
+        .contact-item:hover .corner-bottom-right::before,
+        .contact-item:hover .corner-bottom-right::after {
+            width: 45px; /* Even larger on hover */
+            height: 45px; /* Even larger on hover */
+        }
+
+        .contact-item:hover::before, /* top-left horizontal */
+        .contact-item:hover .corner-top-right::before, /* top-right horizontal */
+        .contact-item:hover .corner-bottom-left::before, /* bottom-left horizontal */
+        .contact-item:hover .corner-bottom-right::before { /* bottom-right horizontal */
+            height: 2px; /* Keep horizontal part thin */
+        }
+
+        .contact-item:hover::after, /* top-left vertical */
+        .contact-item:hover .corner-top-right::after, /* top-right vertical */
+        .contact-item:hover .corner-bottom-left::after, /* bottom-left vertical */
+        .contact-item:hover .corner-bottom-right::after { /* bottom-right vertical */
+            width: 2px; /* Keep vertical part thin */
+        }
+
+
+        /* Social Media Contact Items - Now uses the same rounded border as others */
+        .social-contact-item {
+            border: 2px solid #0f0; /* Use standard border */
+            border-radius: 20px; /* Slightly more rounded for "round square" effect, adjust as needed */
+            box-shadow: none; /* Ensure no extra shadow */
+            text-align: center;
+        }
+
+        .social-contact-item a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px; /* Small inner padding */
+            box-sizing: border-box;
+        }
+
+        /* Custom Hover effect for social media items - reverted to standard */
+        .social-contact-item:hover {
+            box-shadow: 0 0 20px rgba(15, 240, 15, 0.7); /* Standard glow on hover */
+            transform: translateY(-3px);
+        }
+
+        /* Re-enable the existing corner spans for social contact items */
+        .social-contact-item .corner-top-right,
+        .social-contact-item .corner-bottom-left,
+        .social-contact-item .corner-bottom-right {
+            display: block; /* Show them again */
+        }
+        /* Re-enable the default ::before and ::after for .social-contact-item */
+        .social-contact-item::before,
+        .social-contact-item::after {
+            display: block; /* Show them again */
+        }
+
+
+        .contact-label {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-detail {
+            font-size: 1.1rem;
+            color: #ccc;
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            transition: opacity 0.3s ease, height 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-item.revealed .contact-detail {
+            opacity: 1;
+            height: auto;
+            margin-top: 0.5rem;
+        }
+
+        .contact-item a {
+            color: #0f0;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+            font-size: 1.1rem;
+            padding: 0.5rem 0; /* Default padding */
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-item a:hover {
+            color: #fff;
+        }
+        /* Hidden class to control initial visibility of content */
+        .hidden-on-load {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-black text-green-400">
+    <div id="loading-screen" class="hidden-on-load">
+        <div id="loading-content">
+            <h1 id="loading-text">Initializing Marnier Crockton Systems...</h1>
+            <div id="loading-bar">
+                <div id="loading-bar-progress"></div>
+            </div>
+             <img src="https://media.giphy.com/media/3o7r1Wv7j6E8QDzINW/giphy.gif" alt="Static TV" id="tv-overlay">
+        </div>
+    </div>
+
+    <div id="main-content" class="flex flex-col items-center">
+        <nav id="top-nav"></nav> <div id="glass-overlay">
+            <h1 class="text-2xl font-bold mb-8">Contact Me</h1>
+
+            <div class="contact-row">
+                <div class="contact-item" id="email-contact">
+                    <div class="contact-label">Email</div>
+                    <div class="contact-detail" data-detail="your.email@example.com"></div>
+                    <span class="corner-top-right"></span>
+                    <span class="corner-bottom-left"></span>
+                    <span class="corner-bottom-right"></span>
+                </div>
+
+                <div class="contact-item" id="phone-contact">
+                    <div class="contact-label">Phone</div>
+                    <div class="contact-detail" data-detail="+1 (123) 456-7890"></div>
+                    <span class="corner-top-right"></span>
+                    <span class="corner-bottom-left"></span>
+                    <span class="corner-bottom-right"></span>
+                </div>
+            </div>
+
+            <div class="contact-item social-contact-item">
+                <a href="https://www.linkedin.com/in/your-linkedin-profile" target="_blank" rel="noopener noreferrer">
+                    <div class="contact-label">LinkedIn</div>
+                </a>
+                <span class="corner-top-right"></span>
+                <span class="corner-bottom-left"></span>
+                <span class="corner-bottom-right"></span>
+            </div>
+
+            <div class="contact-item social-contact-item">
+                <a href="https://github.com/your-github-profile" target="_blank" rel="noopener noreferrer">
+                    <div class="contact-label">GitHub</div>
+                </a>
+                <span class="corner-top-right"></span>
+                <span class="corner-bottom-left"></span>
+                <span class="corner-bottom-right"></span>
+            </div>
+
+            <div class="contact-item social-contact-item">
+                <a href="https://twitter.com/your-twitter-profile" target="_blank" rel="noopener noreferrer">
+                    <div class="contact-label">Twitter</div>
+                </a>
+                <span class="corner-top-right"></span>
+                <span class="corner-bottom-left"></span>
+                <span class="corner-bottom-right"></span>
+            </div>
+
+            <div class="contact-item social-contact-item">
+                <a href="https://www.youtube.com/your-youtube-channel" target="_blank" rel="noopener noreferrer">
+                    <div class="contact-label">YouTube</div>
+                </a>
+                <span class="corner-top-right"></span>
+                <span class="corner-bottom-left"></span>
+                <span class="corner-bottom-right"></span>
+            </div>
+        </div>
+
+        <footer id="footer">
+            <div id="footer-links">
+                <a href="https://www.linkedin.com/in/your-linkedin-profile" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://github.com/your-github-profile" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://twitter.com/your-twitter-profile" target="_blank" rel="noopener noreferrer">Twitter</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Common Navigation and Footer Injection (to keep consistent across pages) ---
+            const topNavHtml = `
+                <ul>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#skills">Skills</a></li>
+                    <li class="dropdown">
+                        <a href="index.html#experience">Experience</a>
+                        <div class="dropdown-content">
+                            </div>
+                    </li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a id="play-game-button" href="#">Play</a></li>
+                </ul>
+            `;
+            document.getElementById('top-nav').innerHTML = topNavHtml;
+
+            // --- Contact Page Specific Logic ---
+            const contactItems = document.querySelectorAll('.contact-item');
+
+            contactItems.forEach(item => {
+                const detailElement = item.querySelector('.contact-detail');
+                const detailContent = detailElement ? detailElement.getAttribute('data-detail') : null;
+                let isClicked = false; // To keep content visible after click
+
+                if (detailElement && detailContent) {
+                    item.addEventListener('mouseenter', () => {
+                        if (!isClicked) {
+                            detailElement.textContent = detailContent;
+                            item.classList.add('revealed');
+                        }
+                    });
+
+                    item.addEventListener('mouseleave', () => {
+                        if (!isClicked) {
+                            item.classList.remove('revealed');
+                            detailElement.textContent = '';
+                        }
+                    });
+
+                    item.addEventListener('click', () => {
+                        isClicked = !isClicked; // Toggle clicked state
+                        if (isClicked) {
+                            detailElement.textContent = detailContent;
+                            item.classList.add('revealed');
+                        } else {
+                            item.classList.remove('revealed');
+                            detailElement.textContent = '';
+                        }
+                    });
+                } else if (item.querySelector('a')) {
+                    // For items with direct links, make the whole box clickable
+                    item.addEventListener('click', (event) => {
+                        const link = item.querySelector('a');
+                        if (link) {
+                            // Prevent default if the click isn't directly on the link,
+                            // but still trigger the link's action
+                            if (event.target !== link) {
+                                event.preventDefault();
+                                window.open(link.href, '_blank');
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Placeholder for game logic (from main page)
+            const gameButton = document.getElementById('play-game-button');
+            if (gameButton) {
+                gameButton.addEventListener('click', () => {
+                    alert('Loading Game...');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+.

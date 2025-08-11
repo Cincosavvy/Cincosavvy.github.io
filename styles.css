@@ -1,0 +1,113 @@
+/* Basic Reset & Body Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern, clean font */
+    line-height: 1.6;
+    background-color: #f8f9fa; /* Light background */
+    color: #343a40; /* Dark gray text */
+    -webkit-font-smoothing: antialiased; /* Better font rendering */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header Styling */
+header {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #e9ecef; /* Slightly darker header background */
+    margin-bottom: 30px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+h1 {
+    color: #007bff; /* Primary blue for heading */
+    font-size: 2.8em; /* Larger, more prominent heading */
+    margin: 0;
+}
+
+/* Main About Section Container */
+.about-section {
+    max-width: 960px; /* Wider content area */
+    margin: 0 auto; /* Center the section */
+    padding: 30px;
+    background-color: #ffffff; /* White background for the content box */
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* More pronounced shadow */
+}
+
+/* Flexbox Container for Image and Text */
+.about-content-flex {
+    display: flex; /* Activate Flexbox */
+    align-items: flex-start; /* Align items to the top (picture and text start at the same line) */
+    gap: 40px; /* More space between the image and the text for better readability */
+    flex-wrap: wrap; /* Allows items to wrap onto the next line on smaller screens */
+}
+
+/* Profile Picture Styling */
+.profile-picture-flex {
+    flex-shrink: 0; /* Prevents the image from shrinking smaller than its defined width */
+    width: 250px; /* Slightly larger image for visual presence */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 50%; /* Make it perfectly circular */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    border: 5px solid #007bff; /* A border around the picture */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Nice shadow for the picture */
+}
+
+/* About Text Styling */
+.about-text-flex {
+    flex-grow: 1; /* Allows the text div to take up all remaining available space */
+    min-width: 300px; /* Ensures text has a minimum width before wrapping */
+}
+
+.about-text-flex p {
+    margin-bottom: 1.2em; /* More space between paragraphs */
+    text-align: left; /* Keep text left-aligned for standard readability */
+    font-size: 1.1em; /* Slightly larger font size for readability */
+    color: #495057; /* Slightly lighter text color */
+}
+
+/* Responsive Adjustments for Smaller Screens (Mobile First Approach) */
+@media (max-width: 768px) {
+    .about-content-flex {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+        align-items: center; /* Center the image and text horizontally */
+        text-align: center; /* Center text within the section on mobile */
+        gap: 25px; /* Adjust gap when stacked */
+    }
+
+    .profile-picture-flex {
+        width: 180px; /* Adjust image size for mobile */
+        border-width: 3px; /* Thinner border for mobile */
+    }
+
+    .about-text-flex p {
+        text-align: center; /* Center text on mobile */
+        font-size: 1em; /* Standard font size for mobile */
+    }
+
+    h1 {
+        font-size: 2em; /* Smaller heading on mobile */
+    }
+
+    .about-section {
+        padding: 20px; /* Reduce padding on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-picture-flex {
+        width: 150px; /* Even smaller image for very small screens */
+    }
+}
+
+/* Footer Styling (Optional) */
+footer {
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 50px;
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-size: 0.9em;
+    border-top: 1px solid #dee2e6;
+}
